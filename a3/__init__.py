@@ -83,3 +83,25 @@ def one_vs_all_parser(y: np.ndarray):
         y_e[num] = col
 
     return y_e
+
+class OneVsAllClassifier:
+    def __init__(self, clfs):
+        self.clfs = clfs
+
+    def predict(self, X):
+        if len(X.shape) != 2:
+            raise ValueError("X is not 2 dimensional")
+
+        y = np.zeros((X.shape[0], len(self.clfs)))
+
+        # I DON'T SEE A WAY TO VECTORIZE THIS :(
+        # Actually, there can be 1 for loop instead of 2. Yay!
+        #for row_idx in range(X.shape[0]):
+        #   for clf_idx in range(len(self.clfs)):
+        #      y[row_idx, clf_idx] = self.clfs[clf_idx].predict(X[row_idx].reshape(1, -1))
+
+        # Attempt 2
+        for i in range(len(self.clfs)):
+            y[:, i] = self.clfs[i].predict(X)
+
+        return y
