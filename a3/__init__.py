@@ -105,3 +105,10 @@ class OneVsAllClassifier:
             y[:, i] = self.clfs[i].predict(X)
 
         return y
+
+def ensemble_predict_binary(clfs, X):
+    y = np.zeros(X.shape[0])
+    for clf in clfs:
+        y += clf.predict_proba(X)[:, 1]
+    y /= len(clfs)
+    return np.round(y)
