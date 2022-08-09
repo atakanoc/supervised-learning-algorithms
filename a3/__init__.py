@@ -112,3 +112,14 @@ def ensemble_predict_binary(clfs, X):
         y += clf.predict_proba(X)[:, 1]
     y /= len(clfs)
     return np.round(y)
+
+def save_pickle(file_path, data):
+    file = open(file_path, 'ab')
+    pickle.dump(data, file)
+    file.close()
+
+def load_pickle(file_path):
+    file = open(file_path, 'rb')
+    data = pickle.load(file)
+    file.close()
+    return data
