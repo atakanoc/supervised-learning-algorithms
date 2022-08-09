@@ -2,6 +2,7 @@ import numpy as np
 import os
 import gzip
 from urllib.request import urlretrieve
+import pickle
 
 
 # Credits = https://mattpetersen.github.io/load-mnist-with-numpy
