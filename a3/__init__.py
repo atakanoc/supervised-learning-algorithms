@@ -69,6 +69,7 @@ def mnist(path=None):
 
 train_X, train_y, test_X, test_y = mnist()
 
+
 def one_vs_all_parser(y: np.ndarray):
     if y.ndim != 1:
         raise ValueError(f"y must be 1 dimensional, instead is {y.ndim}.")
@@ -83,6 +84,7 @@ def one_vs_all_parser(y: np.ndarray):
         y_e[num] = col
 
     return y_e
+
 
 class OneVsAllClassifier:
     def __init__(self, clfs):
@@ -106,6 +108,7 @@ class OneVsAllClassifier:
 
         return y
 
+
 def ensemble_predict_binary(clfs, X):
     y = np.zeros(X.shape[0])
     for clf in clfs:
@@ -113,10 +116,12 @@ def ensemble_predict_binary(clfs, X):
     y /= len(clfs)
     return np.round(y)
 
+
 def save_pickle(file_path, data):
     file = open(file_path, 'ab')
     pickle.dump(data, file)
     file.close()
+
 
 def load_pickle(file_path):
     file = open(file_path, 'rb')
