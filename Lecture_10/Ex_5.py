@@ -23,3 +23,12 @@ clf = Sequential([
     Dense(64, activation='sigmoid'),
     Dense(10, activation='sigmoid')
 ])
+
+# -- Compile Neural Network.
+clf.compile(
+    optimizer='SGD',
+    loss='mse',
+    metrics=['accuracy']
+)
+
+# -- Train Neural Network.
