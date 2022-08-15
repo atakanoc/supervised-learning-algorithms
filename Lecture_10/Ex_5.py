@@ -27,6 +27,8 @@ def create_nn(
         metrics=['accuracy']
     )
 
+    return clf
+
 # --- Part 1 - Load & prepare dataset --- #
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 y_train, y_test = to_categorical(y_train), to_categorical(y_test)
