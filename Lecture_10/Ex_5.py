@@ -47,7 +47,7 @@ X_valid = X_valid.reshape((-1, 784))
 # TODO: Make grid-search optional with loading instead. Model should not be trained.
 # TODO: Training should also be optional allowing you to load weights instead.
 
-search = True
+search = False
 if search:  # TODO: Save pickle
 
     # -- Grid of hyper-parameters.
@@ -63,17 +63,22 @@ if search:  # TODO: Save pickle
     for a in params['activation']:
         for o in params['optimizer']:
             for n in params['hidden_nodes']:
+                # -- Create and train  model.
                 print(f"Model = {a}, {o}, {n}")
                 temp_clf = create_nn(a, o, n)
-                temp_clf.fit(X_train, y_train, batch_size=64, epochs=1)  # Low epoch for quick testing.
-                accuracy = temp_clf.evaluate(X_valid, y_valid)[1]
+                temp_clf.fit(X_train, y_train, batch_size=64, epochs=2)  # Low epoch for quick search (not a perfect solution).
 
-                if accuracy > best_accuracy:
-                    best_accuracy = accuracy
+                # -- Evaluate model.
+                cur_accuracy = temp_clf.evaluate(X_valid, y_valid)[1]
+                if cur_accuracy > best_accuracy:
+                    best_accuracy = cur_accuracy
                     best_params = [a, o, n]
-
                 print("\n\n")
 
+    print(f"Best hyper-parameters: {best_params}")
     a3.save_pickle("pickles/best_params.pickle", best_params)
 else:  # TODO: Load pickle
-    pass
+    best_params = a3.load_pickle("pickles/best_params.pickle")
+
+clf = create_nn(best_params[0], best_params[1], best_params[2])
+clf.fit(X_train, y_train, batch_size=64, epochs=2)
