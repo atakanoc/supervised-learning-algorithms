@@ -39,12 +39,25 @@ X_test = X_test.reshape((-1, 784))
 
 # --- Part 2 - Grid search for best hyper-parameters --- #
 params = {
-    'activation': ['sigmoid', 'relu', 'softmax'],
+    'activation': ['sigmoid', 'relu'],
     'optimizer': ['SGD', 'Adam'],
-    'hidden_nodes': [16, 32, 64]
+    'hidden_nodes': [128, 256, 512]
 }
 
-clf = KerasClassifier(model=create_nn, epochs=10, batch_size=64)  # Wrap Keras model for sci-kitlearn
-grid = GridSearchCV(clf, params, n_jobs=-1)
-grid.fit(X_train, y_train)
-clf = grid.best_estimator_
+# TODO: Make grid-search optional with loading instead.
+for a in params['activation']:
+    for o in params['optimizer']:
+        for n in params['hidden_nodes']:
+            clf = create_nn(a, o, n)
+            clf.fit(X_train, y_train, batch_size=64, epochs=10)
+            print(f"Model = {a}, {o}, {n}")
+            clf.evaluate(X_test, y_test)
+            print("\n\n")
+
+
+# clf = KerasClassifier(model=create_nn, epochs=10, batch_size=64,
+#                       activation=None, hidden_nodes=None)  # Wrap Keras model for sci-kitlearn
+# grid = GridSearchCV(clf, params, n_jobs=-1, verbose=3)
+# grid.fit(X_train, y_train)
+# clf = grid.best_estimator_
+# print(clf.get_params())
